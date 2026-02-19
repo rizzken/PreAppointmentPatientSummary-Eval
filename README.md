@@ -26,13 +26,14 @@ The project is motivated by a real-world need in primary care: doctors need fast
 
 Tested on synthetic patient records.
 
-**Key Findings** (to be updated with real results):
-- Dataset size: X rows, Y columns
-- Missing values: highest in [column names]
-- Invalid birthdates: X records (future dates or illogical)
-- Duplicate patient IDs: X cases
-- Gender inconsistencies: multiple spellings detected
-- Unrealistic income/expenses: negative or zero values
+**Key Findings** :
+- Dataset size: 115 records, 28 columns
+- Missing values: highest in 'suffix': 114; 'deathdate': 100, 'maiden': 84
+- Duplicated rows: 2 
+- Unrealistic income/expenses: 6 records (negative values)
+- Invalid birthdates: 5 records (future dates or illogical)
+- Gender inconsistencies: 3 spellings detected
+
 
 **Conclusion**: Even synthetic demographic data requires thorough validation before feeding into AI summarization pipelines.
 
