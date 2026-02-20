@@ -34,8 +34,12 @@ Tested on synthetic patient records.
 - Invalid birthdates: 5 records (future dates or illogical)
 - Gender inconsistencies: 3 spellings detected
 
+  **Not included in this phase**: Check for presence of at least one identification document (ssn, drivers, passport).  
+(Planned for future iteration if ID becomes relevant for summarization.)
 
 **Conclusion**: Even synthetic demographic data requires thorough validation before feeding into AI summarization pipelines.
+
+**Artifacts**: New file with patient's age column was created for feature usage during the summary generation phase (patients_with_age.csv)
 
 ## Next Steps (Planned)
 
