@@ -70,23 +70,109 @@ See detailed evaluation: [02_summary_evaluation.ipynb](notebooks/02_summary_eval
 **Artifacts**  
 - `patients_samples1.csv` — file with 10 randomly selected samples from the full list
 
-## Phase 3: Automated LLM Evaluation with DeepEval and RAGAs
+## Phase 3: Automated Evaluation & Judge Model Comparison
 
-**Objective**: Transition from manual evaluation to automated quality assessment of LLM-generated summaries using modern evaluation frameworks.
+**Metrics used:** DeepEval GEval (4 custom criteria) · ROUGE-L · BERTScore  
+**Judge models tested:** Qwen 2.5:3B · Qwen 2.5:7B · Mistral Nemo (all via Ollama)  
+**Samples:** 10 synthetic patient profiles (same as Phase 2)
 
-**Tools & Frameworks**:
-- DeepEval
-- RAGAs
-- Ollama + Llama 3.1 8B (primary judge model)
+### Setup
 
-**Key Activities**:
-- Automated calculation of core LLM evaluation metrics (Faithfulness, Hallucination, Answer Relevance, Answer Correctness)
-- Comparison between manual scores and automated metrics
-- Analysis of correlation between different evaluation methods
-- Evaluation of judge model stability
+- Framework: [DeepEval](https://github.com/confident-ai/deepeval) with custom `GEval` metrics
+- All judge models run locally via Ollama (no external API calls)
+- Each metric evaluated separately per patient to avoid Colab timeouts
 
-**Main Outcomes**:
+### Evaluation Metrics
 
+Four custom GEval metrics were defined to match the specific requirements
+of structured medical summarization:
+
+| Metric | What it checks |
+|---|---|
+| **Faithfulness to Raw Data** | No invented facts; all values grounded in input |
+| **Summary Correctness** | Match against manual QA reference summary |
+| **Summary Structure** | Proper labels, readable format for a physician |
+| **Summary Completeness** | All available fields covered; missing ones marked Unknown |
+
+Standard `FaithfulnessMetric` was tested first but proved too strict
+for this structured summarization task — replaced with custom GEval criteria.
+
+### Judge Model Comparison
+
+| Judge Model | Faithfulness | Correctness | Structure | Completeness | Avg | Speed / metric |
+|---|---|---|---|---|---|---|
+| Qwen 2.5:3B | 0.0 | 0.5 | 0.0 | 0.0 | **0.13** | ~15 min |
+| Qwen 2.5:7B | 0.8 | 0.7 | 0.8 | 0.7 | **0.75** | ~20+ min |
+| Mistral Nemo | 0.8 | 1.0 | 0.6 | 0.8 | **0.80** | ~5 min (locally) |
+
+### Key Findings
+
+**Qwen 2.5:3B — unreliable judge.**  
+Scored 0.0 on Faithfulness, Structure, and Completeness across all 10 patients,
+flagging correctly generated content as hallucinations.
+The model could not reliably follow multi-condition evaluation criteria.
+Not suitable as a judge for this task.
+
+**Qwen 2.5:7B — consistent but non-differentiating.**  
+Produced identical scores for all 10 patients (0.8 / 0.7 / 0.8 / 0.7),
+indicating the model evaluates the summary template rather than
+individual patient content. Scores are plausible but lack granularity.
+
+**Mistral Nemo — best overall judge.**  
+Only model to produce meaningful per-metric differentiation.
+Correctness = 1.0 (summaries match reference), Structure = 0.6
+(correctly flagged missing `patient_name` label), Faithfulness = 0.8
+(penalised for not marking absent healthcare coverage as Unknown).
+
+**Critical limitation — score uniformity across patients.**  
+All three judge models gave identical scores to all 10 patients.
+This is a known LLM-as-a-Judge failure mode: the judge evaluates
+format and template rather than case-specific content.
+A reliable judge should produce variance across patients.
+
+### ROUGE-L and BERTScore
+
+Used as objective, non-LLM-dependent baselines alongside GEval.
+
+- **ROUGE-L** captures structural overlap and detects omitted fields
+- **BERTScore** measures semantic similarity to the reference summary
+
+These provide a useful second opinion independent of judge model quality.
+
+### Conclusion
+
+Automated evaluation via LLM-as-a-Judge is viable, but judge model
+choice is critical. Mistral Nemo is the most suitable local judge tested:
+best quality, fastest speed, most meaningful scores.
+
+The zero-variance finding (identical scores across all patients) is
+the main limitation of this phase. A production-grade evaluation pipeline
+would require either a larger judge model (e.g. GPT-4o mini, Claude Haiku
+via API) or more atomic evaluation criteria that force the judge to inspect
+individual field values rather than overall format.
+
+Phase 3 establishes a three-layer evaluation pipeline:
+statistical metrics (ROUGE-L) + semantic metrics (BERTScore) + LLM judge (Mistral Nemo).
+This is a solid foundation for scaling to 50–100 records and
+comparing multiple summarization models.
+
+### Artifacts
+
+- `Judge_scores.xlsx` — raw GEval scores from all three judge models across all 4 metrics
+
+---
+
+## Skills & Tools Demonstrated (updated)
+
+- Manual & exploratory testing
+- Data quality validation (missing values, duplicates, range/date checks, consistency)
+- Python + pandas for data analysis & visualization
+- Ollama for local LLM inference and judge evaluation
+- DeepEval framework (GEval, custom metrics)
+- ROUGE-L and BERTScore for automated summarization metrics
+- LLM-as-a-Judge methodology and its practical limitations
+- GitHub + Google Colab for development & version control
+  
 ## How to Run
 
 1. Open notebooks in Google Colab  
@@ -100,4 +186,4 @@ QA Engineer transitioning to AI/ML & GenAI QA
 Wellington, New Zealand  
 [LinkedIn](https://linkedin.com/in/katerina-kasparova) | [GitHub](https://github.com/rizzken)
 
-Last updated: March 2026
+Last updated: May 2026
