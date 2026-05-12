@@ -55,7 +55,7 @@ Tested on 115 synthetic patient records.
 **Judge models**: Qwen2.5 3B, Qwen2.5 7B, **Mistral Nemo**
 
 **Best result** (Mistral Nemo):
-- Average automated score: **0.80**
+- Average automated score: **0.77**
 - Fastest and most reliable judge when run locally
 
 **Important finding**: Smaller judge models can be unstable or overly strict. Choice of judge model is critical in LLM-as-a-Judge approach.
