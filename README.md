@@ -12,7 +12,7 @@ This project evaluates the quality of synthetic patient data and tests how well 
 - Explore manual vs automated evaluation approaches (including LLM-as-a-Judge)
 - Demonstrate a full-cycle GenAI testing methodology
 
-The project is inspired by a real need in primary care — doctors need fast and accurate patient overviews.
+The project is inspired by a real need in primary care - doctors need fast and accurate patient overviews.
 
 ## Skills & Tools Demonstrated
 
@@ -47,7 +47,7 @@ Tested on 115 synthetic patient records.
 - Hallucinations: **0%**
 - Main issue: formatting inconsistency (30–40%)
 
-[→ Detailed evaluation](notebooks/02_summary_evaluation.ipynb)
+[Detailed evaluation](notebooks/02_summary_evaluation.ipynb)
 
 ## Phase 3: Automated Evaluation & Judge Model Comparison
 
@@ -60,11 +60,11 @@ Tested on 115 synthetic patient records.
 
 **Important finding**: Smaller judge models can be unstable or overly strict. Choice of judge model is critical in LLM-as-a-Judge approach.
 
-[→ Detailed Phase 3](notebooks/03_automated_evaluation.ipynb)
+[Detailed Phase 3](notebooks/03_automated_evaluation.ipynb)
 
 ## Conclusion
 
-This project demonstrates a complete testing cycle for an LLM-based medical summarization feature — from data quality to manual evaluation and automated metrics. It highlights both the potential and current limitations of using generative AI in healthcare contexts.
+This project demonstrates a complete testing cycle for an LLM-based medical summarization feature - from data quality to manual evaluation and automated metrics. It highlights both the potential and current limitations of using generative AI in healthcare contexts.
 
 Particularly valuable experience was gained in building evaluation pipelines and understanding the nuances of LLM-as-a-Judge methodology.
 
