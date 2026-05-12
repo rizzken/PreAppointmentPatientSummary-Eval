@@ -1,6 +1,6 @@
 # PreAppointmentPatientSummary-Eval
 
-**Quality evaluation of patient demographic summarization before primary care visit**
+**LLM-based patient profile summarization — data quality + automated evaluation pipeline**
 
 ## Project Overview
 
