@@ -62,6 +62,14 @@ Tested on 115 synthetic patient records.
 
 [Detailed Phase 3](notebooks/03_automated_evaluation.ipynb)
 
+## Known limitations
+
+- Dataset is fully synthetic and does not reflect real clinical variability
+- Manual evaluation sample size was relatively small (10 summaries)
+- No clinician validation was performed on generated summaries
+- Evaluation focused on quality and consistency rather than production performance or latency
+- Prompt robustness and regression testing across prompt versions were not explored
+
 ## Conclusion
 
 This project demonstrates a complete testing cycle for an LLM-based medical summarization feature - from data quality to manual evaluation and automated metrics. It highlights both the potential and current limitations of using generative AI in healthcare contexts.
